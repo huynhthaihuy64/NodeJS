@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  # MongoDB service
+  mongodb:
+    image: mongo
+    container_name: my-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  # Node.js service
+  nodejs:
+    image: node:latest
+    container_name: my-nodejs
+    volumes:
+      - ./app:/app
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    command: sh -c "npm install && npm start"
